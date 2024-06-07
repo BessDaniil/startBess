@@ -11,4 +11,5 @@ public record AuthorsRequest(
         String biography,
         @NotNull
         Date birthDate
-) {}
+) {
+}

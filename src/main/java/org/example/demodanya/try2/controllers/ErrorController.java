@@ -13,7 +13,7 @@ public class ErrorController {
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ErrorInfo processException(Exception e){
+    public ErrorInfo processException(Exception e) {
         logger.error("unexpected error", e);
         return new ErrorInfo(e.getMessage());
     }
