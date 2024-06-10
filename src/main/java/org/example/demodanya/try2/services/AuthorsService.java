@@ -10,9 +10,9 @@ public interface AuthorsService {
 
     void createAuthors (String name, String biography, Date birthDate);
 
-    Authors getAuthorById(int id);
+    void updateAuthors (String name, String biography, Date birthDate, int id);
 
-//    public void updateAuthors (String biography, Date birthDate, String name);
-//
-//    public void deleteAuthors (String name);
+    void deleteAuthors (int id);
+
+    Authors getAuthorById(int id);
 }
