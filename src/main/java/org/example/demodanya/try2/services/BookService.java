@@ -1,17 +1,22 @@
 package org.example.demodanya.try2.services;
 
-import org.example.demodanya.try2.models.Books;
+import org.example.demodanya.try2.models.BooksDto;
 
+import java.util.Date;
 import java.util.List;
 
 public interface BookService {
-    List<Books> getBooksByTitle(String title);
+    List<BooksDto> getBooksByTitle(String title);
 
-    List<Books> getBooksByGenre(String genre);
+    List<BooksDto> getBooksByGenre(String genre);
 
-    List<Books> getBooksByAuthorId(int authorId);
+    List<BooksDto> getBooksByAuthorId(int authorId);
 
-    void createBooks (int authorId, String title, String genre);
+    List<BooksDto> getBooksByCategoryId(int categoryId);
+
+    List<BooksDto> getBooksByGenreAndAuthorBornLater(String genre, Date birthDate);
+
+    void createBooks (int authorId, String title, String genre, int categoryId);
 
     void updateBooks (String title, String genre, int authorId, int id);
 

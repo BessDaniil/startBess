@@ -8,7 +8,9 @@ public record BooksRequest(
         @NotNull
         String genre,
         @NotNull
-        int authorId
+        int authorId,
+        @NotNull
+        int categoryId
 ) {
 
 }

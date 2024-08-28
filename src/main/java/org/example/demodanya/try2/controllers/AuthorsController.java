@@ -1,5 +1,7 @@
 package org.example.demodanya.try2.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.example.demodanya.try2.models.Authors;
 import org.example.demodanya.try2.models.AuthorsRequest;
@@ -12,6 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/authors")
+@Tag(
+        name = "Авторы",
+        description = "Все методы для работы с авторами"
+)
 public class AuthorsController {
     private final AuthorsService authorsService;
 
@@ -20,11 +26,13 @@ public class AuthorsController {
     }
 
     @GetMapping(value = "/{name}")
+    @Operation(summary = "Получить список авторов по имени")
     public List<Authors> getAuthor(@PathVariable String name) {
         return authorsService.getAuthors(name);
     }
 
     @PostMapping
+    @Operation(summary = "Добавить автора")
     @ResponseStatus(HttpStatus.CREATED)
     public void createAuthors(@Valid @RequestBody AuthorsRequest request) {
         authorsService.createAuthors(
@@ -35,6 +43,7 @@ public class AuthorsController {
     }
 
     @PutMapping(value = "/update/{id}")
+    @Operation(summary = "Обновить информацию об авторе")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAuthors(@Valid @RequestBody AuthorsRequest request, @PathVariable int id) {
         authorsService.updateAuthors(
@@ -46,27 +55,14 @@ public class AuthorsController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "Удалить автора")
     public void deleteAuthors(@PathVariable int id) {
         authorsService.deleteAuthors(id);
     }
 
     @GetMapping("/by-id/{id}")
+    @Operation(hidden = true)
     public Authors getAuthorByName(@PathVariable int id) {
         return authorsService.getAuthorById(id);
     }
-
-//    @PutMapping("/{name}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void updateAuthors(@Valid @RequestBody AuthorsRequest request, @PathVariable String name) {
-//        authorsService.updateAuthors(
-//                request.biography(),
-//                request.birthDate(),
-//                name
-//        );
-//    }
-//
-//    @DeleteMapping("/{name}")
-//    public void deleteAuthors(@PathVariable String name) {
-//        authorsService.deleteAuthors(name);
-//    }
 }
