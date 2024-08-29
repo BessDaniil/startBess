@@ -1,6 +1,7 @@
 package org.example.demodanya.try2.services;
 
 import org.example.demodanya.try2.models.BooksDto;
+import org.example.demodanya.try2.models.FullBookInfoProjection;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ public interface BookService {
 
     List<BooksDto> getBooksByCategoryId(int categoryId);
 
-    List<BooksDto> getBooksByGenreAndAuthorBornLater(String genre, Date birthDate);
+    List<FullBookInfoProjection> getBooksByGenreAndAuthorBornLater(String genre, Date birthDate);
 
     void createBooks (int authorId, String title, String genre, int categoryId);
 

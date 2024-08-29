@@ -3,10 +3,7 @@ package org.example.demodanya.try2.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.example.demodanya.try2.models.Books;
-import org.example.demodanya.try2.models.BooksDto;
-import org.example.demodanya.try2.models.BooksRequest;
-import org.example.demodanya.try2.models.Categories;
+import org.example.demodanya.try2.models.*;
 import org.example.demodanya.try2.repository.CategoryRepository;
 import org.example.demodanya.try2.services.BookService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -57,7 +54,7 @@ public class BooksController {
 
     @GetMapping(value = "/genre/{genre}/birthDate/{birthDate}")
     @Operation(summary = "Получить список книг с информацией об их категориях по жанру и автор которых родился после указанной даты")
-    public List<BooksDto> getBooksByGenreAndBirthDate(@PathVariable String genre, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) {
+    public List<FullBookInfoProjection> getBooksByGenreAndBirthDate(@PathVariable String genre, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) {
         return bookService.getBooksByGenreAndAuthorBornLater(genre, birthDate);
     }
 

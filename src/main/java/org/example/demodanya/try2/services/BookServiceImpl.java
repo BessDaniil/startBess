@@ -1,10 +1,7 @@
 package org.example.demodanya.try2.services;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.demodanya.try2.models.Authors;
-import org.example.demodanya.try2.models.Books;
-import org.example.demodanya.try2.models.BooksDto;
-import org.example.demodanya.try2.models.Categories;
+import org.example.demodanya.try2.models.*;
 import org.example.demodanya.try2.repository.AuthorRepository;
 import org.example.demodanya.try2.repository.BookRepository;
 import org.example.demodanya.try2.repository.CategoryRepository;
@@ -78,34 +75,38 @@ public class BookServiceImpl implements BookService {
 
     @Override
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public List<BooksDto> getBooksByGenreAndAuthorBornLater(String genre, Date birthDate){
-        List<BooksDto> booksDtoGenreAndAuthor = new ArrayList<>();
-        List<Books> booksResult = new ArrayList<>();
-        List<Authors> authorsResult = new ArrayList<>();
-        List<Categories> categoriesResult = new ArrayList<>();
-        List<Authors> author = authorRepository.findAllByBirthDateAfter(birthDate);
-        List<Books> allByGenre = bookRepository.findAllByGenre(genre);
+    public List<FullBookInfoProjection> getBooksByGenreAndAuthorBornLater(String genre, Date birthDate){
 
-        for (Books book : allByGenre) {
-            for (Authors author1 : author) {
-                if (book.getAuthorId() == author1.getId()){
-                    booksResult.add(book);
-                    authorsResult.add(author1);
-                    List<Categories> categories = book.getCategories();
-                    for (Categories category : categories) {
-                        if (categoriesResult.contains(category)){
-                            
-                        }
-                    }
-                }
-            }
-        }
-        for (Books book : booksResult) {
-            BooksDto booksDto = new BooksDto(book.getId(), book.getTitle(), book.getGenre(), book.getAuthorId());
-            booksDtoGenreAndAuthor.add(booksDto);
-        }
+        return bookRepository.findAllBooksWithAuthorAndCategory(genre);
 
-        return booksDtoGenreAndAuthor;
+
+//        List<BooksDto> booksDtoGenreAndAuthor = new ArrayList<>();
+//        List<Books> booksResult = new ArrayList<>();
+//        List<Authors> authorsResult = new ArrayList<>();
+//        List<Categories> categoriesResult = new ArrayList<>();
+//        List<Authors> author = authorRepository.findAllByBirthDateAfter(birthDate);
+//        List<Books> allByGenre = bookRepository.findAllByGenre(genre);
+//
+//        for (Books book : allByGenre) {
+//            for (Authors author1 : author) {
+//                if (book.getAuthorId() == author1.getId()){
+//                    booksResult.add(book);
+//                    authorsResult.add(author1);
+//                    List<Categories> categories = book.getCategories();
+//                    for (Categories category : categories) {
+//                        if (categoriesResult.contains(category)){
+//
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        for (Books book : booksResult) {
+//            BooksDto booksDto = new BooksDto(book.getId(), book.getTitle(), book.getGenre(), book.getAuthorId());
+//            booksDtoGenreAndAuthor.add(booksDto);
+//        }
+//
+//        return booksDtoGenreAndAuthor;
 
     }
 
