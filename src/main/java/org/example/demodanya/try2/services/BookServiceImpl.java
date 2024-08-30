@@ -77,7 +77,7 @@ public class BookServiceImpl implements BookService {
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public List<FullBookInfoProjection> getBooksByGenreAndAuthorBornLater(String genre, Date birthDate){
 
-        return bookRepository.findAllBooksWithAuthorAndCategory(genre);
+        return bookRepository.findBooksByGenreAndAuthorBornLater(genre, birthDate);
 
 
 //        List<BooksDto> booksDtoGenreAndAuthor = new ArrayList<>();

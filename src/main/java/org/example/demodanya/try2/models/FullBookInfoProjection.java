@@ -13,4 +13,6 @@ public interface FullBookInfoProjection {
     String getAuthorName();
 
     Date getAuthorBirthDate();
+
+    String getCategoryName();
 }

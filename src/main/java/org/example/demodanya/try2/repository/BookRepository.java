@@ -25,10 +25,13 @@ public interface BookRepository extends JpaRepository<Books, Integer> {
 
     List<Books> findAllByCreateDateGreaterThan(Timestamp createDate);
 
-    @Query("select b.id as id, b.title as title, b.genre as genre, a.name as authorName, a.birthDate as authorBirthDate " +
+    @Query("select b.id as id, b.title as title, b.genre as genre, a.name as authorName, " +
+            "a.birthDate as authorBirthDate, c.name as categoryName " +
             "from Books b " +
             "inner join Authors a on b.authorId = a.id " +
-            "where b.genre = :genre")
-    List<FullBookInfoProjection> findAllBooksWithAuthorAndCategory(@Param("genre") String genre);
+            "inner join b.categories c " +
+            "where b.genre = :genre and a.birthDate > :birthDate")
+    List<FullBookInfoProjection> findBooksByGenreAndAuthorBornLater(@Param("genre") String genre,
+                                                                   @Param("birthDate") Date birthDate);
 
 }
