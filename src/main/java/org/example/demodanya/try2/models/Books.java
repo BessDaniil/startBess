@@ -30,13 +30,19 @@ public class Books {
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp updateDate;
 
+
     @ManyToMany
     @JoinTable(
-            name = "book_caterories",
+            name = "book_categories",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Categories> categories = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "books")
+    List<Publisher> publishers = new ArrayList<>();
+
+
 
     public Books(String title, String genre, int authorId) {
         this.title = title;

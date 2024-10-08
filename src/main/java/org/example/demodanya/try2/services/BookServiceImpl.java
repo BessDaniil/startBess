@@ -74,40 +74,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public List<FullBookInfoProjection> getBooksByGenreAndAuthorBornLater(String genre, Date birthDate){
-
         return bookRepository.findBooksByGenreAndAuthorBornLater(genre, birthDate);
+    }
 
-
-//        List<BooksDto> booksDtoGenreAndAuthor = new ArrayList<>();
-//        List<Books> booksResult = new ArrayList<>();
-//        List<Authors> authorsResult = new ArrayList<>();
-//        List<Categories> categoriesResult = new ArrayList<>();
-//        List<Authors> author = authorRepository.findAllByBirthDateAfter(birthDate);
-//        List<Books> allByGenre = bookRepository.findAllByGenre(genre);
-//
-//        for (Books book : allByGenre) {
-//            for (Authors author1 : author) {
-//                if (book.getAuthorId() == author1.getId()){
-//                    booksResult.add(book);
-//                    authorsResult.add(author1);
-//                    List<Categories> categories = book.getCategories();
-//                    for (Categories category : categories) {
-//                        if (categoriesResult.contains(category)){
-//
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        for (Books book : booksResult) {
-//            BooksDto booksDto = new BooksDto(book.getId(), book.getTitle(), book.getGenre(), book.getAuthorId());
-//            booksDtoGenreAndAuthor.add(booksDto);
-//        }
-//
-//        return booksDtoGenreAndAuthor;
-
+    @Override
+    public List<FullBookInfoProjection> getBooksByPublisher(String name){
+        return bookRepository.findBooksByPublisher(name);
     }
 
     @Override

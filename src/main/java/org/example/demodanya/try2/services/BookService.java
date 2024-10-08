@@ -17,6 +17,8 @@ public interface BookService {
 
     List<FullBookInfoProjection> getBooksByGenreAndAuthorBornLater(String genre, Date birthDate);
 
+    List<FullBookInfoProjection> getBooksByPublisher(String name);
+
     void createBooks (int authorId, String title, String genre, int categoryId);
 
     void updateBooks (String title, String genre, int authorId, int id);

@@ -2,6 +2,7 @@ package org.example.demodanya.try2.services;
 
 
 import org.example.demodanya.try2.models.Authors;
+import org.example.demodanya.try2.models.FullAuthorInfoProjection;
 import org.example.demodanya.try2.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,10 @@ public class AuthorsServiceImpl implements AuthorsService {
     public Authors getAuthorById(int id) {
         return authorsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Автор с id " + id + " не найден"));
+    }
+
+    @Override
+    public List<FullAuthorInfoProjection> getAuthorByPublisher(String name){
+        return authorsRepository.getFullAuthorPublisher(name);
     }
 }

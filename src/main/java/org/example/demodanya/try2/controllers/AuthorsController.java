@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.example.demodanya.try2.models.Authors;
 import org.example.demodanya.try2.models.AuthorsRequest;
+import org.example.demodanya.try2.models.FullAuthorInfoProjection;
 import org.example.demodanya.try2.services.AuthorsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +65,11 @@ public class AuthorsController {
     @Operation(hidden = true)
     public Authors getAuthorByName(@PathVariable int id) {
         return authorsService.getAuthorById(id);
+    }
+
+    @GetMapping("/by-publisher/{name}")
+    @Operation(summary = "Получить всех авторов, чьи книги выпущены определенным издателем, с указанием их книг и категорий")
+    public List<FullAuthorInfoProjection> getAuthorsByPublisher(@PathVariable String name) {
+        return authorsService.getAuthorByPublisher(name);
     }
 }

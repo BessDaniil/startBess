@@ -53,10 +53,16 @@ public class BooksController {
     }
 
     @GetMapping(value = "/genre/{genre}/birthDate/{birthDate}")
-    @Operation(summary = "Получить список книг с информацией об их категориях по жанру и автор которых родился после указанной даты")
+    @Operation(summary = "Получить список книг с информацией об их авторе и категориях по жанру и автор которых родился после указанной даты")
     public List<FullBookInfoProjection> getBooksByGenreAndBirthDate(@PathVariable String genre,
                                                                     @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) {
         return bookService.getBooksByGenreAndAuthorBornLater(genre, birthDate);
+    }
+
+    @GetMapping(value = "/by-publisher/{name}")
+    @Operation(summary = "Получить список книг определенного издателя с информацией об их авторе и категориях")
+    public List<FullBookInfoProjection> getBooksByPublisher(@PathVariable String name) {
+        return bookService.getBooksByPublisher(name);
     }
 
     @PostMapping

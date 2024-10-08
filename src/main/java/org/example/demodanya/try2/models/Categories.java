@@ -19,6 +19,7 @@ public class Categories {
 
     @ManyToMany(mappedBy = "categories")
     List<Books> includedBooks;
+
     public Categories(String name) {
         this.name = name;
     }

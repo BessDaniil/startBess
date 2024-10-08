@@ -1,6 +1,7 @@
 package org.example.demodanya.try2.services;
 
 import org.example.demodanya.try2.models.Authors;
+import org.example.demodanya.try2.models.FullAuthorInfoProjection;
 
 import java.util.Date;
 import java.util.List;
@@ -15,4 +16,6 @@ public interface AuthorsService {
     void deleteAuthors (int id);
 
     Authors getAuthorById(int id);
+
+    List<FullAuthorInfoProjection> getAuthorByPublisher(String name);
 }
