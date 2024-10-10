@@ -1,4 +1,4 @@
-package org.example.demodanya.try2.logging;
+package org.example.demodanya.try2.config;
 
 import org.example.demodanya.try2.models.Books;
 import org.example.demodanya.try2.repository.BookRepository;
@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
