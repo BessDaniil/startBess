@@ -29,11 +29,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/register", "/auth/login").permitAll()
-                        .requestMatchers("/user/resource").hasRole("USER")
-                        .requestMatchers("/admin/resource").hasRole("ADMIN")
+                        .requestMatchers("/books/by-title/{title}").hasRole("USER")
+                        .requestMatchers("/books/update/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
-
         return http.build();
     }
 

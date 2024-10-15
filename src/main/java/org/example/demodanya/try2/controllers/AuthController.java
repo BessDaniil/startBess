@@ -1,14 +1,12 @@
 package org.example.demodanya.try2.controllers;
 
 
-import org.example.demodanya.try2.models.User;
+import org.example.demodanya.try2.models.Users;
 import org.example.demodanya.try2.models.UserLoginDto;
 import org.example.demodanya.try2.models.UserRegistrationDto;
 import org.example.demodanya.try2.repository.UserRepository;
 import org.example.demodanya.try2.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +20,6 @@ public class AuthController {
     private UserRepository userRepository;
 
     @Autowired
-    @Lazy
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -30,7 +27,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@RequestBody UserRegistrationDto registrationDto) {
-        User user = new User();
+        Users user = new Users();
         user.setUsername(registrationDto.getUsername());
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setRole(registrationDto.getRole());
@@ -41,7 +38,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody UserLoginDto loginDto) {
-        User existingUser = userRepository.findByUsername(loginDto.getUsername());
+        Users existingUser = userRepository.findByUsername(loginDto.getUsername());
         if (existingUser != null && passwordEncoder.matches(loginDto.getPassword(), existingUser.getPassword())) {
             return jwtUtil.generateToken(existingUser.getUsername());
         } else {
