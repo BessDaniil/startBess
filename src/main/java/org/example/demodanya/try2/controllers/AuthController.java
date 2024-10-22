@@ -40,7 +40,7 @@ public class AuthController {
     public String login(@RequestBody UserLoginDto loginDto) {
         Users existingUser = userRepository.findByUsername(loginDto.getUsername());
         if (existingUser != null && passwordEncoder.matches(loginDto.getPassword(), existingUser.getPassword())) {
-            return jwtUtil.generateToken(existingUser.getUsername());
+            return jwtUtil.generateToken(existingUser.getUsername(), existingUser.getRole());
         } else {
             throw new RuntimeException("Invalid username or password");
         }

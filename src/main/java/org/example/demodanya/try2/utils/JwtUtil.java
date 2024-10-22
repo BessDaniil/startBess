@@ -13,8 +13,9 @@ import java.util.Map;
 public class JwtUtil {
     private String SECRET_KEY = "BessSecretKey";
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<String, Object>();
+        claims.put("role", role);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
