@@ -11,4 +11,8 @@ public class UserLoginDto {
         this.username = username;
         this.password = password;
     }
+
+    public UserLoginDto() {
+
+    }
 }

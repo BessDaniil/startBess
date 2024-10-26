@@ -7,11 +7,9 @@ import org.example.demodanya.try2.models.UserRegistrationDto;
 import org.example.demodanya.try2.repository.UserRepository;
 import org.example.demodanya.try2.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,18 +29,28 @@ public class AuthController {
         user.setUsername(registrationDto.getUsername());
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setRole(registrationDto.getRole());
-
         userRepository.save(user);
         return "User registered successfully";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody UserLoginDto loginDto) {
-        Users existingUser = userRepository.findByUsername(loginDto.getUsername());
-        if (existingUser != null && passwordEncoder.matches(loginDto.getPassword(), existingUser.getPassword())) {
-            return jwtUtil.generateToken(existingUser.getUsername(), existingUser.getRole());
-        } else {
-            throw new RuntimeException("Invalid username or password");
-        }
+    @GetMapping("/user")
+    public String user(Authentication authentication) {
+        return authentication.getPrincipal().toString();
     }
+
+    @GetMapping("/admin")
+    public String admin (Authentication authentication) {
+        return authentication.getPrincipal().toString();
+    }
+
+
+//    @PostMapping("/login")
+//    public String login(@RequestBody UserLoginDto loginDto) {
+//        Users existingUser = userRepository.findByUsername(loginDto.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+//        if (existingUser != null && passwordEncoder.matches(loginDto.getPassword(), existingUser.getPassword())) {
+//            return jwtUtil.generateToken(existingUser.getUsername(), existingUser.getRole());
+//        } else {
+//            throw new RuntimeException("Invalid username or password");
+//        }
+//    }
 }
