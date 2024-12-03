@@ -44,8 +44,10 @@ public class SecurityConfig {
         UsernameConfigEx usernameConfigEx = new UsernameConfigEx(authenticationManager, jwtUtil);
     return http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth.requestMatchers("auth/register").permitAll(). //вход без авторизации
-                    requestMatchers("books/by-title/{title}")
-                    .authenticated()).addFilter(usernameConfigEx).build();
+                    requestMatchers("books/by-title/**").hasRole("ADMIN")
+                    .anyRequest().authenticated()
+            )
+            .addFilter(usernameConfigEx).build();
     }
 
 
