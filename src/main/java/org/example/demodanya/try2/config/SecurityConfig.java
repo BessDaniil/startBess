@@ -1,9 +1,11 @@
 package org.example.demodanya.try2.config;
 
 import org.example.demodanya.try2.services.MyUserDetailsService;
+import org.example.demodanya.try2.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -37,13 +39,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtUtil jwtUtil) throws Exception {
+        AuthenticationManager authenticationManager = authenticationProvider()::authenticate;
+        UsernameConfigEx usernameConfigEx = new UsernameConfigEx(authenticationManager, jwtUtil);
     return http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth.requestMatchers("auth/register").permitAll(). //вход без авторизации
-                    requestMatchers("books/by-title/{title}").authenticated()) //вход с авторизацией
-            .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-            .build();
-}
+                    requestMatchers("books/by-title/{title}")
+                    .authenticated()).addFilter(usernameConfigEx).build();
+    }
 
 
 }

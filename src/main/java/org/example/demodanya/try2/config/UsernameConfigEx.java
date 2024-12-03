@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.demodanya.try2.utils.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,10 +20,14 @@ import java.util.stream.Collectors;
 
 public class UsernameConfigEx extends UsernamePasswordAuthenticationFilter {
 
-    private AuthenticationManager authenticationManager;
+
+    private final AuthenticationManager authenticationManager;
     //прописать класс AuthenticationManager +++
-    private JwtUtil jwtUtil;
-    public UsernameConfigEx() {
+    private final JwtUtil jwtUtil;
+
+    public UsernameConfigEx(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
         setFilterProcessesUrl("auth/login");
     }
     @Override
