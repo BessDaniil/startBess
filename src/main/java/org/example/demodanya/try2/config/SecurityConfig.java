@@ -1,5 +1,7 @@
 package org.example.demodanya.try2.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.example.demodanya.try2.services.MyUserDetailsService;
 import org.example.demodanya.try2.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,35 +21,38 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+    private final PasswordEncoder passwordEncoder;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public UserDetailsService userDetailsService() {
-    return new MyUserDetailsService();
+        return new MyUserDetailsService();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setUserDetailsService(userDetailsService());
-    provider.setPasswordEncoder(passwordEncoder);
-    return provider;
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService());
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtUtil jwtUtil) throws Exception {
         AuthenticationManager authenticationManager = authenticationProvider()::authenticate;
-        UsernameConfigEx usernameConfigEx = new UsernameConfigEx(authenticationManager, jwtUtil);
-    return http.csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth.requestMatchers("auth/register").permitAll(). //вход без авторизации
-                    requestMatchers("books/by-title/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-            )
-            .addFilter(usernameConfigEx).build();
+        CustomAuthenticationFilter customAuthenticationFilter =
+                new CustomAuthenticationFilter(authenticationManager, jwtUtil, objectMapper);
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth.requestMatchers("auth/register", "/auth/login").permitAll(). //вход без авторизации
+                        requestMatchers("books/by-title/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .addFilter(customAuthenticationFilter).build();
     }
 
 

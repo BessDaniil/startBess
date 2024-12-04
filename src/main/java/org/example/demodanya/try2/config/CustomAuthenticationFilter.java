@@ -1,9 +1,11 @@
 package org.example.demodanya.try2.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.demodanya.try2.controllers.ErrorInfo;
 import org.example.demodanya.try2.utils.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,19 +16,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-public class UsernameConfigEx extends UsernamePasswordAuthenticationFilter {
-
+public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     //прописать класс AuthenticationManager +++
     private final JwtUtil jwtUtil;
+    private final ObjectMapper objectMapper;
 
-    public UsernameConfigEx(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil,
+                                      ObjectMapper objectMapper) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        setFilterProcessesUrl("auth/login");
+        this.objectMapper = objectMapper;
+        setFilterProcessesUrl("/auth/login");
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response){
@@ -53,9 +58,13 @@ public class UsernameConfigEx extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+
         PrintWriter out = response.getWriter();
-        out.print("{\"ты зашел не в ту дверь, сынок\": \"" + failed.getMessage());
-        out.flush();
+        String errorMessage = "ты зашел не в ту дверь, сынок. " + failed.getMessage();
+        out.print(
+                objectMapper.writeValueAsString(new ErrorInfo(errorMessage))
+        );
         //его переопределяем, чтобы понять что он делает. Нужно посмотреть что делает по умолчанию и поменять чуть чуть
     }
 }
